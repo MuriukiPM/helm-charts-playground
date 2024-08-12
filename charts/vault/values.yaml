@@ -1,0 +1,56 @@
+vault:
+  vault:
+    config:
+      listener:
+        tcp:
+          address: "[::]:8200"
+          tls_disable: true
+
+      ui: true
+
+      seal:
+        awskms:
+          kms_key_id: alias/vault-unseal-key
+          region: us-east-1
+
+      storage:
+        dynamodb:
+          ha_enabled: true
+          region: us-east-1
+          table: "vault-backend"
+
+      api_addr: http://127.0.0.0:8200
+      cluster_addr: http://127.0.0.0:8201
+
+    logLevel: info
+
+  resources:
+    requests:
+      cpu: 50m
+      memory: 400Mi
+    limits:
+      memory: 400Mi
+
+  vaultUnsealer:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        memory: 64Mi
+
+  vaultConfigurer:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        memory: 64Mi
+
+  prometheusStatsdExporter:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        memory: 128Mi
